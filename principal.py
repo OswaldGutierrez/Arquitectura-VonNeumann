@@ -56,39 +56,50 @@ def actualizarTablaMemoria():
 
 def siguientePaso():
     global clickContador
+    
+    highlight_color = "yellow"
+    defaultColor = "white"
+    
+     # Resetear colores
+    contPrograma.config(bg=defaultColor)
+    rDirecciones.config(bg=defaultColor)
+    rDatos.config(bg=defaultColor)
+    rInstrucciones.config(bg=defaultColor)
+    decodificador.config(bg=defaultColor)
+    rEntrada.config(bg=defaultColor)
 
     clickContador += 1  # Incrementar el número de clics
 
     if clickContador == 1:
         # Paso 1: Mostrar el valor de contPrograma
         valorContador = contador.contador
-        contPrograma.config(text=valorContador)
+        contPrograma.config(text=valorContador, bg=highlight_color)
         
     elif clickContador == 2:
         valorContador = contador.contador
-        rDirecciones.config(text=valorContador)
+        rDirecciones.config(text=valorContador, bg=highlight_color)
         
     elif clickContador == 3:
         valorContador = contador.incrementar()
-        contPrograma.config(text=valorContador)
+        contPrograma.config(text=valorContador, bg=highlight_color)
 
     elif clickContador == 4:
         # Paso 2: Actualizar rDatos con el valor del diccionario memory_data
-        direccionTabla = rDirecciones.cget("text")  # Obtener el texto actual de rDirecciones
+        direccionTabla = rDirecciones.cget("text")  # Obtener el texto actual de rDirecciones       
         valorDato = tablaDeMemoria.get(direccionTabla, "No encontrado")  # Buscar el valor en el diccionario
-        rDatos.config(text=valorDato)  # Actualizar rDatos con el valor encontrado
+        rDatos.config(text=valorDato, bg=highlight_color)  # Actualizar rDatos con el valor encontrado
 
     elif clickContador == 5:
         # Paso 3: Actualizar rInstrucciones con el valor de rDatos
         valorRegistroDatos = rDatos.cget("text")  # Obtener el texto actual de rDatos
-        rInstrucciones.config(text=valorRegistroDatos)  # Actualizar rInstrucciones con el valor de rDatos
+        rInstrucciones.config(text=valorRegistroDatos, bg=highlight_color)  # Actualizar rInstrucciones con el valor de rDatos
         
     elif clickContador == 6:
         # Paso 4: Actualizar decodificador con los primeros 4 bits de rInstrucciones
         valorRegistroIntrucciones = rInstrucciones.cget("text")
         valorDecodificador = particion.obtenerPrimeros4Bits(valorRegistroIntrucciones)
         signoDecodificador = intruccionData.get(valorDecodificador)
-        decodificador.config(text=signoDecodificador)
+        decodificador.config(text=signoDecodificador, bg=highlight_color)
         
         # Verificar si el valor del decodificador es 'F' y deshabilitar el botón si es así
         if signoDecodificador == "...":
@@ -99,7 +110,7 @@ def siguientePaso():
         # Paso 5: Actualizar rDirecciones con los últimos 4 bits de rInstrucciones
         valorUltimoRegistroInstrucciones = rInstrucciones.cget("text")
         valor2Direcciones = particion.obtenerUltimos4Bits(valorUltimoRegistroInstrucciones)
-        rDirecciones.config(text=valor2Direcciones)
+        rDirecciones.config(text=valor2Direcciones, bg=highlight_color)
         
     elif clickContador == 8:
         # Paso 6: Actualizar rDatos con el valor del diccionario memory_data
@@ -107,10 +118,10 @@ def siguientePaso():
         if instruccionRealizar != "M":
             direccionTabla = rDirecciones.cget("text")  # Obtener el texto actual de rDirecciones
             valorDato = tablaDeMemoria.get(direccionTabla, "No encontrado")  # Buscar el valor en el diccionario
-            rDatos.config(text=valorDato)  # Actualizar rDatos con el valor encontrado
+            rDatos.config(text=valorDato, bg=highlight_color)  # Actualizar rDatos con el valor encontrado
         else:
             valorAcum = acumulador.cget("text")
-            rDatos.config(text=valorAcum)
+            rDatos.config(text=valorAcum, bg=highlight_color)
             claveDiccionario = rDirecciones.cget("text")
             valorDiccionario = rDatos.cget("text")
             tablaDeMemoria[claveDiccionario] = valorDiccionario                 ## Agregar otro paso para que no actualice rDatos y el contenido de memoria al mismo tiempo
@@ -121,10 +132,10 @@ def siguientePaso():
         instruccionRealizar = decodificador.cget("text")
         if instruccionRealizar != "M":  # Solo actualiza rEntrada si la operación no es M
             valorDato = rDatos.cget("text")
-            rEntrada.config(text=valorDato)
+            rEntrada.config(text=valorDato, bg=highlight_color)
         else:
             valorContador = contador.contador
-            rDirecciones.config(text=valorContador)  # Opcional, si también quieres actualizar rDirecciones con el valor de contPrograma
+            rDirecciones.config(text=valorContador, bg=highlight_color)  # Opcional, si también quieres actualizar rDirecciones con el valor de contPrograma
             
             # Reiniciar el clickContador para repetir los pasos del 2 al 9
             clickContador = 2
@@ -150,13 +161,15 @@ def siguientePaso():
         #valorContador = contador.incrementar()  # Incrementar y obtener el nuevo valor
         #contPrograma.config(text=valorContador)
         valorContador = contador.contador
-        rDirecciones.config(text=valorContador)  # Opcional, si también quieres actualizar rDirecciones con el valor de contPrograma
+        rDirecciones.config(text=valorContador, bg=highlight_color)  # Opcional, si también quieres actualizar rDirecciones con el valor de contPrograma
         
         # Reiniciar el clickContador para repetir los pasos del 2 al 9
         clickContador = 2
 
     print("Click número: ", clickContador)
     actualizarTablaMemoria()  # Actualizar componentes como ejemplo    
+
+
 
 
 def reiniciarOperacion():
@@ -182,7 +195,7 @@ def reiniciarOperacion():
     # Habilitar el botón "Siguiente" si estaba deshabilitado
     botonSiguiente.config(state=tk.NORMAL)
     
-    
+      
 
 # Configuración básica de la ventana principal
 root = tk.Tk()
